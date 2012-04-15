@@ -1,0 +1,168 @@
+<head>
+  <title>Forms On The Fly</title>
+<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css">
+</head>
+
+<body>
+{{> main}}
+</body>
+
+<template name="main">
+	{{> nav}}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span3">
+        <div class="well sidebar-nav">
+        	{{> sidebar}}
+        </div><!--/.well -->
+      </div><!--/span-->
+      <div class="span9">
+        {{> showcase}}
+      </div>
+    </div>
+ 	</div>
+</template>
+
+<template name="nav">
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">Forms On The Fly</a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>            
+          </ul>
+          <p class="navbar-text pull-right">Brought to you by <a target="_blank" href="http://meteor.com/">Meteor</a></p>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="showcase">
+	{{#if win}}
+	<div class="hero-unit">
+		{{#with win}}
+		<h2>{{name}}</h2>
+    {{/with}}
+		<ul class="nav nav-tabs">
+			{{#each currentTabs }}      
+			{{> navTab }}
+      {{/each}}
+    </ul>
+    <div class="tab-content">
+			{{#each currentTabs }}      
+			{{> tabPane }}
+      {{/each}}
+  	</div>
+  </div>      
+  {{/if}}  
+</template>
+
+<template name="navTab">
+	<li id="{{ _id }}" class="nav-tab-item {{active}}">
+		<a onclick="return false;" href="#">{{ name }}</a>
+	</li>	
+</template>
+
+<template name="tabPane">
+	<div id="{{_id}}_pane" class="tab-pane" style="display: {{visible}}">
+		<form class="well">
+			<h3>{{ name }}</h3>
+			{{#each fields}}
+			{{#with getField this}}
+			{{#if this}}
+			{{> fieldInput}}
+			{{/if}}
+			{{/with}}
+			{{/each}}
+		</form>
+	</div>
+</template>
+
+<template name="fieldInput">
+	<div class="controls">
+  <input type="text" class="span3" placeholder="{{name}}" />
+	</div>
+</template>
+
+<template name="windowItem">	
+	<li class="window-item clearfix {{ active }}">	
+		<a class="pull-left" href="#" onclick="return false;">
+			{{ name }}<span class="window-remove pull-right">X</span>
+		</a>	
+	{{#with tabs}}
+	{{#if this}}
+	<ul class="nav nav-list">
+	{{#each this}}
+	{{#with getTab this}}
+	{{#if this}}
+	  {{> tab}}
+  {{/if}}
+  {{/with}}
+  {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#unless this}}
+  <li><h4>No Tabs Yet</h4></li>
+  {{/unless}}
+	{{/with}}
+	</li>
+</template>
+
+<template name="tab">
+	<li class="tab-item clearfix {{ active }}">	
+		<a class="pull-left" href="#" onclick="return false;">{{ name }}<span class="tab-remove pull-right">X</span></a>	
+		{{#with fields}}
+		<ul class="nav nav-list">
+			{{#each this}}
+			{{#with getField this}}
+			{{#if this}}
+				{{> field}}
+			{{/if}}
+			{{/with}}
+			{{/each}}
+		</ul>
+		{{/with}}
+	</li>
+</template>
+
+<template name="field">
+	<li class="field-item clearfix">
+		<a class="pull-left" href="#" onclick="return false;">{{ name }}<span class="field-remove pull-right">X</span></a>
+	</li>
+</template>
+
+<template name="sidebar">
+	<ul class="nav nav-list">
+  <li class="nav-header"><h3>Window</h3></li>
+		<li>
+		<form class="form-inline" onsubmit="return false;">
+	  		<input id="window-name" placeholder="Add New Window" />
+  	</form>
+  </li>
+  <li class="nav-header"><h3>Tab</h3></li>
+	<li class="">
+  	<form class="form-inline" onsubmit="return false;">
+  		<input id="tab-name" placeholder="Add New Tab" />
+  	</form>
+  </li>
+  <li class="nav-header"><h3>Field</h3></li>
+	<li class="">
+  	<form class="form-inline" onsubmit="return false;">
+  		<input id="field-name" placeholder="Add New Field" />
+  	</form>
+  </li>
+	{{#each windows }}
+	  {{> windowItem}}
+	{{/each}}  
+	</ul>	
+</template>

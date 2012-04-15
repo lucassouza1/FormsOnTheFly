@@ -1,0 +1,24 @@
+/* CSS declarations go here */
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+.window-item a,
+.tab-item a,
+.field-item a {
+	width: 100%;
+}
+
+.nav-list .nav-list > .active > a,
+.nav-list .nav-list > .active > a:hover {
+  	background-color: #1ea6ea;
+}
+
+.nav-list .nav-list .nav-list > .active > a,
+.nav-list .nav-list .nav-list > .active > a:hover {
+  	background-color: #32bafe;
+}
